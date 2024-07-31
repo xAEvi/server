@@ -164,3 +164,21 @@ app.get("/api/user/:userId", (req, res) => {
     }
   );
 });
+
+app.get("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+
+  // Realiza la consulta a la base de datos
+  db.query("SELECT * FROM publicacion WHERE id = ?", [id], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error al obtener los datos del post");
+    } else {
+      if (result.length > 0) {
+        res.send(result[0]);
+      } else {
+        res.status(404).send("Post no encontrado");
+      }
+    }
+  });
+});
